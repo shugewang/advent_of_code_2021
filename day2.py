@@ -4,15 +4,18 @@ def calculate_position(input_file_name):
 
     horizontal = 0
     depth = 0
+    aim = 0
 
     for command in planned_course:
         command_arr = command.split(" ")
         if command_arr[0] == "forward":
             horizontal += int(command_arr[1])
+            depth += int(command_arr[1]) * aim
         if command_arr[0] == "up":
-            depth -= int(command_arr[1])
+            aim -= int(command_arr[1])
         if command_arr[0] == "down":
-            depth += int(command_arr[1])
+            aim += int(command_arr[1])
+
     print(horizontal*depth)
 
 
