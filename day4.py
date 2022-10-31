@@ -24,20 +24,20 @@ def convert_to_bingo_dict(bingo):
 
 
 def check_winner(numbers_drawn, bingo):
-    win = False
+    total_boards = list(range(1, len(bingo)+1))
+    winning_score = 0
     for number in numbers_drawn:
         for board_number, board in bingo.items():
             for i in range(len(board)):
                 bingo[board_number][i] = [check_if_called(x, number) for x in board[i]]
                 if board[i][0] == board[i][1] == board[i][2] == board[i][3] == board[i][4] or board[0][i] == board[1][i] == board[2][i] == board[3][i] == board[4][i]:
-                    print("winning board number",board_number)
-                    win = True
-                    break
-            if win:
-                break
-        if win:
-            winning_score = get_winning_score(bingo, board_number, number)
-            return winning_score
+                    if board_number in total_boards:
+                        total_boards.remove(board_number)
+                        if len(total_boards) == len(bingo) - 1:
+                            winning_score = get_score(bingo, board_number, number)
+                        if len(total_boards) == 0:
+                            losing_score = get_score(bingo, board_number, number)
+                            return winning_score, losing_score
 
 
 def check_if_called(bingo_number, number):
@@ -47,7 +47,7 @@ def check_if_called(bingo_number, number):
         return bingo_number
 
 
-def get_winning_score(bingo, board_number, number):
+def get_score(bingo, board_number, number):
     unmarked_sum = 0
     for i in bingo[board_number]:
          for j in i:
@@ -56,15 +56,13 @@ def get_winning_score(bingo, board_number, number):
     return unmarked_sum*int(number)
 
 
-# def get_last_board():
-#     count = len(bingo)
-
 def main():
     numbers_drawn, bingo = get_bingo("bingo.txt")
     print(numbers_drawn)
     print(bingo)
-    winning_score = check_winner(numbers_drawn, bingo)
-    print(winning_score)
+    winning_score, losing_score = check_winner(numbers_drawn, bingo)
+    print("winning score", winning_score)
+    print("losing score", losing_score)
 
 
 main()
