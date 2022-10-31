@@ -57,6 +57,7 @@ def get_power_consumption():
 def filter_most_common(most_common, i):
     return lambda binary_bits: binary_bits[i] == str(most_common)
 
+
 def get_oxygen_generator_rating(binary_bits_array, binary_length):
     for i in range(0, binary_length):
         zeros, ones, most_common, least_common = get_most_common_value(binary_bits_array, i)
